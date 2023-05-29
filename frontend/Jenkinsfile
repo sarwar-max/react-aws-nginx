@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'master', credentialsId: 'gitlabid', url: 'https://gitlab.com/mohit3233618/samplebookapp.git'
+                git branch: 'master', url: 'https://github.com/sarwar-max/react-aws-nginx.git'
             }
         }
 
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 rtServer(
                     id: 'Artifactory',
-                    url: 'http://18.116.41.194:8082/artifactory',
+                    url: 'http://18.222.174.184:8082/artifactory',
                     username: 'sarwar',
                     password: 'Sarwar@1#',
                     bypassProxy: true,
@@ -44,7 +44,8 @@ pipeline {
         stage('Deploy to Nginx') {
             steps {
                 // Assuming you have a deployment script or command to copy the build artifacts to Nginx server
-                sh 'scp -r ./build user@nginx-server:/var/www/html'
+                sh 'scp -r ./build myuser@18.191.195.84:/var/www/html'
+
             }
         }
     }
