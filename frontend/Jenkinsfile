@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'master', credentialsId: 'gitlabid', url: 'https://gitlab.com/mohit3233618/samplebookapp.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm ci'
+                sh 'npm run build'
+                archiveArtifacts(artifacts: '**/build/**', fingerprint: true)
+            }
+        }
+
+        stage('Publish to Artifactory') {
+            steps {
+                rtServer(
+                    id: 'Artifactory',
+                    url: 'http://18.116.41.194:8082/artifactory',
+                    username: 'sarwar',
+                    password: 'Sarwar@1#',
+                    bypassProxy: true,
+                    timeout: 300
+                )
+
+                rtUpload(
+                    serverId: 'Artifactory',
+                    spec: '''{
+                        "files": [
+                            {
+                                "pattern": "**/build/**",
+                                "target": "libs-snapshot-local"
+                            }
+                        ]
+                    }'''
+                )
+            }
+        }
+
+        stage('Deploy to Nginx') {
+            steps {
+                // Assuming you have a deployment script or command to copy the build artifacts to Nginx server
+                sh 'scp -r ./build user@nginx-server:/var/www/html'
+            }
+        }
+    }
+
+    post {
+        success {
+            // Notify JFrog Artifactory about successful build
+            rtPublishBuildInfo(serverId: 'Artifactory')
+        }
+    }
+}
