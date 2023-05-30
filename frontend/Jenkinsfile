@@ -46,8 +46,10 @@ pipeline {
         stage('Deploy to Nginx') {
             steps {
                 sh 'mkdir -p ~/.ssh'
-                sh 'ssh-keyscan -H 18.119.121.70 >> ~/.ssh/known_hosts'
-                sh 'scp -r ./frontend/build sammy@18.119.121.70:/var/www/html'
+                sh 'ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""'
+                sh 'chmod 600 ~/.ssh/id_rsa'
+                sh 'ssh-copy-id -i ~/.ssh/id_rsa sammy@18.119.121.70'
+                sh 'scp -r -i ~/.ssh/id_rsa ./frontend/build sammy@18.119.121.70:/var/www/html'
             }
         }
     }
