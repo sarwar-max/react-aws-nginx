@@ -43,16 +43,13 @@ pipeline {
 
         stage('Deploy to Nginx') {
             steps {
-                // Assuming you have a deployment script or command to copy the build artifacts to Nginx server
                 sh 'scp -r ./build sammy@3.133.109.183:/var/www/html'
-
             }
         }
     }
 
     post {
         success {
-            // Notify JFrog Artifactory about successful build
             rtPublishBuildInfo(serverId: 'Artifactory')
         }
     }
