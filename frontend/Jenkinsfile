@@ -45,7 +45,7 @@ pipeline {
 
         stage('Deploy to Nginx') {
             steps {
-                sh 'scp -r ./build sammy@3.133.109.183:/var/www/html'
+                sh 'scp -r ./build sammy@18.119.121.70:/var/www/html'
             }
         }
     }
