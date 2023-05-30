@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('react-aws-nginx') {
+                dir('react-aws-nginx/frontend') {
                     sh 'npm install'
                     sh 'npm run build'
                     archiveArtifacts(artifacts: '**/build/**', fingerprint: true)
