@@ -45,6 +45,7 @@ pipeline {
 
         stage('Deploy to Nginx') {
             steps {
+                sh 'mkdir -p ~/.ssh'
                 sh 'ssh-keyscan -H 18.119.121.70 >> ~/.ssh/known_hosts'
                 sh 'scp -r ./frontend/build sammy@18.119.121.70:/var/www/html'
             }
