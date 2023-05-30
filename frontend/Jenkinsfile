@@ -1,23 +1,22 @@
 pipeline {
     agent any
 
-stage('Git Checkout') {
-    steps {
-        git branch: 'master', url: 'https://github.com/sarwar-max/react-aws-nginx.git'
-    }
-}
-
-stage('Build') {
-    steps {
-        dir('react-aws-nginx') {
-            sh 'npm install'
-            sh 'npm run build'
-            archiveArtifacts(artifacts: '**/build/**', fingerprint: true)
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/sarwar-max/react-aws-nginx.git'
+            }
         }
-    }
-}
 
-
+        stage('Build') {
+            steps {
+                dir('react-aws-nginx') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                    archiveArtifacts(artifacts: '**/build/**', fingerprint: true)
+                }
+            }
+        }
 
         stage('Publish to Artifactory') {
             steps {
