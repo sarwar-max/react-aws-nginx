@@ -20,7 +20,7 @@ pipeline {
             steps {
                 rtServer(
                     id: 'Artifactory',
-                    url: 'http://18.222.174.184:8082/artifactory',
+                    url: 'http://52.14.215.244:8082/artifactory',
                     username: 'sarwar',
                     password: 'Sarwar@1#',
                     bypassProxy: true,
@@ -44,7 +44,7 @@ pipeline {
         stage('Deploy to Nginx') {
             steps {
                 // Assuming you have a deployment script or command to copy the build artifacts to Nginx server
-                sh 'scp -r ./build myuser@18.191.195.84:/var/www/html'
+                sh 'scp -r ./build sammy@3.133.109.183:/var/www/html'
 
             }
         }
