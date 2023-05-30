@@ -8,13 +8,14 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'npm ci'
-                sh 'npm run build'
-                archiveArtifacts(artifacts: '**/build/**', fingerprint: true)
-            }
-        }
+      stage('Build') {
+    steps {
+        sh 'npm install'
+        sh 'npm run build'
+        archiveArtifacts(artifacts: '**/build/**', fingerprint: true)
+    }
+}
+
 
         stage('Publish to Artifactory') {
             steps {
